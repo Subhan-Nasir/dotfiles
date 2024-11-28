@@ -1,0 +1,189 @@
+format = """
+[](fg:darkblue)\
+$username\
+${custom.arrowDark}\
+$directory\
+${custom.arrowLight}\
+$git_branch\
+$git_status\
+${custom.arrowDark}\
+$c\
+$elixir\
+$elm\
+$golang\
+$gradle\
+$haskell\
+$java\
+$julia\
+$nodejs\
+${custom.arrowLight}\
+$c\
+$nim\
+$python\
+$c\
+$rust\
+$scala\
+${custom.arrowDark}\
+$docker_context\
+${custom.arrowLight}\
+$time\
+[ ](fg:darkblue)\
+\n$character
+"""
+
+command_timeout = 1000
+
+palette = "alt_blue"
+
+[palettes.alt_blue]
+darkblue="#385170"
+lightblue="#c5d5d9"
+darkgrey="#131414"
+lightgrey="#dbd9d9"
+
+# ANSI 256 Colours
+#darkblue="21"
+#lightblue="159"
+#darkgrey="235"
+#lightgrey="251"
+
+#[](#385170)\
+#$os\
+
+# Disable the blank line at the start of the prompt
+# add_newline = false
+
+
+# You can also replace your username with a neat symbol like   or disable this
+# and use the os module below
+[username]
+show_always = true
+style_user = "bg:darkblue fg:lightgrey"
+style_root = "bg:darkblue fg:lightgrey"
+format = '[$user ]($style)'
+disabled = false
+
+# An alternative to the username module which displays a symbol that
+# represents the current operating system
+[os]
+style = "bg:darkblue fg:lightgrey"
+disabled = false # Disabled by default
+
+[directory]
+style = "bg:lightgrey fg:darkgrey"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+# Here is how you can shorten some long paths by text replacement
+# similar to mapped_locations in Oh My Posh:
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+# Keep in mind that the order matters. For example:
+# "Important Documents" = " 󰈙 "
+# will not be replaced, because "Documents" was already substituted before.
+# So either put "Important Documents" before "Documents" or use the substituted version:
+# "Important 󰈙 " = " 󰈙 "
+
+[c]
+symbol = " "
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[docker_context]
+symbol = " "
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol $context ]($style) $path'
+
+[elixir]
+symbol = " "
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[elm]
+symbol = " "
+style = "bg:lightlbue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[git_branch]
+symbol = ""
+style = "bg:darkblue fg:lightgrey italic"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:darkblue fg:lightgrey"
+format = '[$all_status$ahead_behind ]($style)'
+
+[golang]
+symbol = " "
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[gradle]
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[haskell]
+symbol = " "
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[java]
+symbol = " "
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[julia]
+symbol = " "
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[nim]
+symbol = "󰆥 "
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[python]
+symbol = " "
+style = "bg:darkblue fg:lightgrey"
+format = '[${symbol} ${pyenv_prefix}(${version} )(\($virtualenv\)) ]($style)'
+
+
+[rust]
+symbol = ""
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[scala]
+symbol = " "
+style = "bg:lightblue fg:darkgrey"
+format = '[ $symbol ($version) ]($style)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:darkblue fg:lightgrey"
+format = '[  $time ]($style)'
+
+[custom.empty]
+style = "bg:lightblue dimmed fg:darkgrey"
+format = '[]($style)'
+
+[custom.arrowDark]
+when = true
+style = "fg:darkblue bg:lightgrey"
+format = '[]($style)'
+
+[custom.arrowLight]
+when = true
+style = "fg:lightgrey bg:darkblue"
+format = '[]($style)'
+
