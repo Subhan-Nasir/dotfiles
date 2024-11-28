@@ -1,0 +1,153 @@
+export EDITOR=vim
+
+alias showlinks="npm list -g --depth=0 --link=true"
+
+alias la="eza -a --icons always --group-directories-first"
+
+alias vimread="jq . | view - -c 'set syntax=json'"
+
+alias python="python3"
+alias pip="pip3"
+
+function tree() {
+
+    if [ $# -eq 0 ]
+        then
+            eza -aT --icons always --group-directories-first
+            return
+    fi
+
+    eza -aT -L $1 --icons always --group-directories-first
+
+}
+
+
+curlf() {
+  curl "$@" | jq . | view - -c "set syntax=json" 
+}
+
+function cls {
+    osascript -e 'tell application "System Events" to keystroke "k" using command down'
+}
+
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
+export FZF_DEFAULT_OPTS="\
+    --border\
+    --pointer \
+    --bind '?:toggle-preview'\
+    --extended
+"
+
+# Fuzzy search folder
+function cdf() {
+
+    RESULT=$(\
+        fd\
+        --type d\
+        --strip-cwd-prefix\
+        --hidden\
+        --follow\
+        --exclude .git\
+        --exclude .Trash\
+        --exclude Library\
+        --exclude .zsh_sessions\
+        | fzf --preview '\
+            eza -aT -L 3\
+            --header\
+            --git\
+            --colour-scale-mode fixed\
+            --icons always\
+            --color always\
+            --group-directories-first {}\
+            | head -n 250 \
+    ')
+
+    [ -n "$RESULT" ] && cd "$RESULT"
+}
+
+# Fuzzy search file and open in vim
+function vf() {
+
+    RESULT=$(\
+        fd\
+        --type f\
+        --strip-cwd-prefix\
+        --hidden\
+        --follow\
+        --exclude .git\
+        --exclude .Trash\
+        --exclude Library\
+        --exclude .zsh_sessions\
+        | fzf --preview\
+            'bat --color=always --decorations=always --style=full --line-range=:254 {}'\
+    )
+
+    [ -n "$RESULT" ] && vim "$RESULT"
+
+}
+
+# Change to local branch using fuzzy search
+function cbr() {
+    #RESULT=$(git branch | grep -v "^\*" | fzf | xargs) 
+    #[ -n "$RESULT" ] && git checkout "$RESULT"
+
+    git branch | grep -v "^\*" | fzf --height=25% --reverse --info=inline | xargs git checkout
+
+
+
+}
+
+# Change to local or remote git branch using fuzzy search
+function fsb() {
+    local pattern=$*
+        local branches branch
+        branches=$(git branch --all | awk 'tolower($0) ~ /'"$pattern"'/') &&
+        branch=$(echo "$branches" | fzf) &&
+        if [ "$branch" = "" ]; then
+            echo "[$0] No branch matches the provided pattern"; return;
+    fi;
+    git checkout "$(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")"
+
+}
+
+
+function fshow() {
+
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {} 
+                FZF-EOF
+            "
+
+}
+
+
+function rlink() {
+    RESULT=$(\
+        npm ls --link --global --parseable |\
+        awk -F "node_modules/" '($2!~/^$/){print $2}' |\
+        fzf --height=25% --reverse --info=inline\
+    )
+
+    [ -n "$RESULT" ] && npm unlink $RESULT --global
+
+}
+
+function rlink() {
+    RESULT=$(\
+        npm ls --link --global --parseable |\
+        awk -F "node_modules/" '($2!~/^$/){print $2}' |\
+        fzf --height=25% --reverse --info=inline\
+    )
+
+    [ -n "$RESULT" ] && npm unlink $RESULT --global
+
+}
+
+eval "$(starship init bash)"
+
