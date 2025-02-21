@@ -14,13 +14,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'mattn/vim-lsp-settings'
     "Plug 'prabirshrestha/asyncomplete.vim'
     "Plug 'prabirshrestha/asyncomplete-lsp.vim'
-    Plug 'jiangmiao/auto-pairs'
+    "Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 
 "------------------------------------------------------------------------
-" ## config
-filetype plugin on
+
+" For plugins to load correctly
+filetype plugin indent on
 
 " copied (almost) directly from the vim-lsp docs:
 function! s:on_lsp_buffer_enabled() abort
@@ -87,13 +88,6 @@ if (has("autocmd") && !has("gui_running"))
 endif
 
 
-
-"let g:lightline = {
-    "\ 'colorscheme': 'materia',
-    "\ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-    "\ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
-"\ }
-
 let g:lightline = {
     \"colorscheme" : "nord"
 \}
@@ -121,7 +115,7 @@ let g:indentLine_conceallevel=1
 
 
 " AutoPair
- let g:AutoPairsFlyMode = 1
+": let g:AutoPairsFlyMode = 1
 
 
 " Don't try to be vi compatible
@@ -134,8 +128,6 @@ filetype off
 " Turn on syntax highlighting
 syntax on
 
-" For plugins to load correctly
-filetype plugin indent on
 
 " TODO: Pick a leader key
 " let mapleader = ","
@@ -146,7 +138,7 @@ let mapleader = "\<Space>"
 set modelines=0
 
 " Show line numbers
-set number
+set number relativenumber
 
 
 " Show file stats
@@ -166,7 +158,12 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
-set noshiftround
+set shiftround
+set autoindent
+
+"keep visual mode after indent
+vnoremap > >gv
+vnoremap < <gv
 
 " Cursor motion
 set scrolloff=3
@@ -183,9 +180,18 @@ set hidden
 set ttyfast
 " Status bar
 set laststatus=2
+
+
 " Last line
 set showmode
 set showcmd
+
+set wildmenu
+
+
+
+
+
 " Searching
 nnoremap / /\v
 vnoremap / /\v
@@ -208,6 +214,10 @@ set listchars=tab:▸\ ,eol:¬
 " set list " To enable by default
 " Or use your leader key + l to toggle on/off
 map <leader>l :set list!<CR> " Toggle tabs and EOL
+
+
+set splitbelow splitright
+
 
 " Change cursor shape between insert and normal mode in iTerm2.app
 if $TERM_PROGRAM =~ "iTerm"
@@ -237,6 +247,4 @@ nnoremap <silent> \ :let @/="" <return>
 "test change 3
 :nmap <c-s> :w<CR>
 :imap <c-s> <Esc>:w<CR>a
-
-
 
